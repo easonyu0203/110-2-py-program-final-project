@@ -23,7 +23,7 @@ export interface TokenClientConfig {
 
 export interface TokenResponse {
   access_token?: string;
-  scopes?: string;
+  scope?: string;
   state?: string;
   error?: "access_denied";
 }
@@ -42,3 +42,4 @@ export interface GooglePickerDocument{
     type: string,
     url: string,
 }
+
