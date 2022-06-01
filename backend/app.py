@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from lib2to3.pgen2 import token
 import os
 import string
 import flask
 from flask import request
 from flask_cors import CORS
 
-import google.oauth2.credentials
-import google_auth_oauthlib.flow
-import googleapiclient.discovery
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
+
+import base64
+from email.mime.text import MIMEText
 
 # This variable specifies the name of a file that contains the OAuth 2.0
 # information for this application, including its client_id and client_secret.
@@ -37,7 +38,21 @@ def test_api_request():
     token: string = data["token"]
     mailConfig = data["mail"]
 
-    return {"success": True}
+    service = build('gmail', 'v1', credentials=Credentials(token))
+    message = MIMEText(mailConfig['text'])
+    for section in ['To', 'Subject']:
+        if section.lower() in mailConfig:
+            message[section] = mailConfig[section.lower()]
+    encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
+
+    create_message = {
+        'raw': encoded_message
+    }
+
+    send_message = service.users().messages().send(
+        userId="me", body=create_message).execute()
+
+    return {"success": True, "send_message": send_message}
 
 
 if __name__ == '__main__':
