@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useGooglePicker, useGmail, MailOptions } from "./hooks/useGoogleClient";
+import { useGooglePicker } from "./hooks/useDrivePicker";
+import { useGmail, MailOptions } from "./hooks/useGoogleClient";
 import { GooglePickerDocument, TokenClient, TokenClientConfig } from "./types";
 
 type Props = {};
