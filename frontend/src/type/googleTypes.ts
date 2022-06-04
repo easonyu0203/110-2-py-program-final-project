@@ -42,4 +42,3 @@ export interface GooglePickerDocument{
     type: string,
     url: string,
 }
-
